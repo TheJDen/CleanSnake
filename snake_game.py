@@ -1,48 +1,7 @@
 import tkinter as tk
 import random
 
-#=============
-# Graded portion is 'Classic Game with Enemy'
-#####################################
 
-#===== EXTRA IMPLEMENTATIONS =========
-#
-# can pause with space bar
-# can restart at end with 'R' key, ## my idea ## or with 'RESTART' button
-# player-controlled snakes can't backtrack on themselves if they are longer than one segment
-#
-#===== IDEAS OF MY OWN ===============
-#
-# My idea was to make a self-contained mini game. I modelled it in the common Adobe Flash Player game style
-#   see (nitrome.com, miniclip.com, coolmathgames.com)
-# To be self-contained, a player should not need to know how any of the code works to play
-#
-# The first thing to do was make the interface more user-friendly. I added small messages implying what the player(s) could do
-# at any given time. I also added redundancies for certain functionalities, like a key and a button for restarting the game.
-#
-# I also made the game-over text a raised frame, so that the user could see it more easily. Most of the user interfaces with multiple
-# components were built in frames to prevent grid-pack conflicts and make manipulation easier.
-#
-# Because the game-over frame covers more of the screen, it sometimes made a death's cause inobvious. To fix this, I made a 'death
-# sequence' which executes before the frame is instantiated; it temporarily makes the game unresponsive, and makes each snake flash in place - highlighting the death.
-#
-# While writing the code, I saw some opportunities for inheritance. To take advantage of them, I made four different game-mode classes which inherit from the classic Snake structure,
-# two of which implement a two-player structure, where a player-two snake inherits its behavior from the Player class, but is instead controlled with the 'wasd' keys, like in old Flash
-# games I used to play.
-#
-# To make all of the modes accessible and obvious to any player, a grid-managed menu was used to present them with images, titles, and subtle instructions.
-# A return to menu 'MENU' button was then appended to the game-over frame; the frame also displays the separate scores and 'winner' for the 2 player games as well
-#
-# The game should be completely navigable and playable upon running the program, and require no insight into the program's code. However, a player might have to
-# explore a mode a bit to learn the subtleties of its ruleset.
-#
-#####################################
-# I also aimed for a certain style in my code. I tried to make it more 'Pythonic', and to find a medium between efficiency and readability
-# I learned some new python things besides tkinter stuff like place and wait_variable and tk Booleans
-# for example, i learned about generator expressions (similar to list comprehensions), and the 'all' keyword (checks if everything passed into it is truth-like)
-#==========================================
-
-#==========================================
 # Purpose: SnakeGUI objects represent an instance of the window where the game is managed.
 #          They create a graphical user interface where the user can see the
 #          game in a separate window, inherits from tkinter Tk
@@ -53,7 +12,7 @@ import random
 #                     initializes window, constructs menu, packs menu into window
 #          forget_menu - makes pack manager 'forget' menu frame, no longer displays, but keeps for retrieval
 #          invoke_menu - makes pack manager re-pack menu frame
-#==========================================
+
 class SnakeGUI(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -79,7 +38,6 @@ class SnakeGUI(tk.Tk):
         self.menu.pack()
 
 
-#==========================================
 # Purpose: GameSelectorFrame objects represent an option for the SnakeGUI menu.
 #          They create a frame where the user can see the game they can choose
 #          inherits from tkinter Frame
@@ -95,7 +53,6 @@ class SnakeGUI(tk.Tk):
 #                     initializes frame, constructs button w/ image and labels, configures button
 #          button_click - function for button to execute upon clicking
 #                         'forgets' menu, instantiates game
-#==========================================
 class GameSelectorFrame(tk.Frame):
     def __init__(self, master, game_class):
         super().__init__(master)
@@ -117,7 +74,6 @@ class GameSelectorFrame(tk.Frame):
         self.GUI.forget_menu()
         self.game(self.GUI)
 
-#==========================================
 # Purpose: GameOverFrame objects represent a 'mini menu' which comes up upon ends of games.
 #          They create a frame where the user can see their game outcome, score, and options
 #          to continue
@@ -136,7 +92,6 @@ class GameSelectorFrame(tk.Frame):
 #                         brings user to menu
 #          restart_click - function for button to execute upon clicking
 #                         restarts game
-#==========================================
 class GameOverFrame(tk.Frame):
     def __init__(self, game_obj):
         self.GUI = game_obj.GUI
@@ -191,7 +146,6 @@ class GameOverFrame(tk.Frame):
 #          They create a tkinter canvas where the user can see the board and
 #          GameObjects
 #
-# Class Variables: variables which don't require instantiation and are 'globally true' for the class
 #                  title - string representing game mode's title
 #                  image_file - string which is name of the image file representing the game mode
 #
@@ -221,9 +175,6 @@ class GameOverFrame(tk.Frame):
 #         death_sequence - hides/unhides all snakes 3 times, waiting a short period between each switch
 #                          highlights game-ending move
 #         goto_menu - destroys/clears all objects, invokes menu, DELETES SELF
-#
-#(What methods does this class have, and what does each do?)
-#==========================================
 class ClassicGame:
 
     title = "Classic Game"
@@ -259,7 +210,7 @@ class ClassicGame:
     def gameloop(self):
         if not self.game_over:
             if not self.paused:
-                if all(snake.move() for snake in self.snakes):  # checks Booleans based on moves' 'validity' using generator expression
+                if all(snake.move() for snake in self.snakes): 
                     self.GUI.after(100, self.gameloop)
                 else:
                     self.paused = True  # keeps snakes from doing stuff during sequence
@@ -300,15 +251,11 @@ class ClassicGame:
         self.GUI.invoke_menu()
         del self  # deletes no longer needed game object
 
-#==========================================
-# Purpose: EnemyClassicGame objects represent a variation of the ClassicGame.
-#          They inherit from it
-#
+
 # Class Variables: variables which don't require instantiation and are 'globally true' for the class
 #                  title - string representing game mode's title
 #                  image_file - string which is name of the image file representing the game mode
 #
-# Instance variables: Inherited
 #                     enemy - reference representing enemy Snake - Enemy object
 #
 # Methods: make_snakes - overload method, provides additional code
@@ -316,7 +263,6 @@ class ClassicGame:
 #         reset_snakes - overload method, provides additional code
 #                        reminds game Enemy and MainPlayer should be set against one another
 #                        after re-initialization
-#==========================================
 class EnemyClassicGame(ClassicGame):
 
     title = "Classic Game with Enemy"
@@ -333,22 +279,17 @@ class EnemyClassicGame(ClassicGame):
         super().reset_snakes()
         self.player.clash(self.enemy)
 
-#==========================================
-# Purpose: TwoPlayerGame objects represent a variation of the ClassicGame with two players.
-#          They inherit from it
-#
-# Class Variables: variables which don't require instantiation and are 'globally true' for the class
+
 #                  title - string representing game mode's title
 #                  image_file - string which is name of the image file representing the game mode
 #
-# Instance variables: Inherited
 #                     player2 - reference representing second player Snake - Player2 object
 #
 # Methods: make_snakes - overload method, provides additional code
 #                     appends PLayer2 Snake to game's snakes
 #          start_game - overload method, provides additional code
 #                       binds the wasd keys to the Player2 Snake
-#==========================================
+
 class TwoPlayerGame(ClassicGame):
 
     title = "Two-Player Game - Passive"
@@ -364,22 +305,14 @@ class TwoPlayerGame(ClassicGame):
         self.bind_keys(['<w>', '<a>', '<s>', '<d>'], self.player2)  # order compliments wasd
         super().start_game()
 
-#==========================================
-# Purpose: CompetitiveGame objects represent a variation of the TwoPlayerGame.
-#          They inherit from it
-#
-# Class Variables: variables which don't require instantiation and are 'globally true' for the class
 #                  title - string representing game mode's title
 #                  image_file - string which is name of the image file representing the game mode
-#
-# Instance variables: Inherited
 #
 # Methods: make_snakes - overload method, provides additional code
 #                     sets MainPlayer against Player2
 #         reset_snakes - overload method, provides additional code
 #                        reminds game MainPlayer and Player2 should be set against one another
 #                        after re-initialization
-#==========================================
 class CompetitiveGame(TwoPlayerGame):
 
     title = "Two-Player Game - Aggresive"
@@ -393,22 +326,11 @@ class CompetitiveGame(TwoPlayerGame):
         super().reset_snakes()
         self.player.clash(self.player2)
 
-
-    
-
-#==========================================
-# Purpose: GameObjs are never directly instantiated, but are instead inherited from.
-#          They house attributes that belong to every object "in" a game,
-#          such as location and color, and help a reader know which classes instantiate
-#          as "in-game" objects
-#
 # Instance variables: game - game object in which the GameObj is being instantiated - (ClassicGame type)
 #                     x - GameObj's x position (corner) - int
 #                     y - GameObj's y position (corner) - int
 #                     color - GameObj's (fill) color - str
 #                     canvas - canvas of GameObj's game
-# Methods: None
-#==========================================
 class GameObj:
     def __init__(self, game, start_x, start_y, color):
         self.game = game
@@ -417,14 +339,6 @@ class GameObj:
         self.color = color
         self.canvas = game.canvas
 
-#==========================================
-# Purpose: Snakes are never directly instantiated, but are instead inherited from.
-#          They house attributes and methods that belong to every "Snake-type"
-#          object "in" a game, such as the constructor overload and forward methods,
-#          and help a reader know which GameObjs instantiate as "Snake-types"
-#          Inherits from GameObj
-#
-# Instance variables: Inherited
 #                     deadly_snakes - list of snakes dangerous to self - dangerous implies game-ending collision
 #                     vx - velocity in the x direction - int, 30, -30, or 0
 #                     vy - velocity in the y direction - int, 30, -30, or 0
@@ -440,7 +354,6 @@ class GameObj:
 #         set_dir - changes velocity to a specific direction
 #         switch_visibility - hides/unhides the snake by doing so for all of its segments
 #         clash - makes two snakes 'dangerous' to one another, appends each to each other's dangerous_snakes
-#==========================================
 class Snake(GameObj): 
 
     velocities = {'Up': (0, -30), 'Left': (-30, 0),
@@ -493,12 +406,6 @@ class Snake(GameObj):
         self.deadly_snakes.append(other)
         other.deadly_snakes.append(self)
 
-#==========================================
-# Purpose: MainSnakes represent the main player snake
-#         They inherit from Snake
-#
-# Instance variables: Inherited
-#
 # Methods: __init__ - overload method, provides additional code;
 #                     makes snake dangerous to itself (basic Snake configuration)
 #         set_dir_key - changes velocity to a direction determined by a binded key
@@ -518,12 +425,6 @@ class MainPlayer(Snake):
         else:
             self.set_dir(key_direction)
 
-#==========================================
-# Purpose: Enemys(Enemies?) represent the player's enemy
-#         They inherit from Snake
-#
-# Instance variables: Inherited
-#
 # Methods: __init__ - overload method, provides additional code;
 #                     changes default color and start position
 #         find_dir - lets enemy determine where food is located
@@ -548,19 +449,9 @@ class Enemy(Snake):
         direction = self.find_dir()
         self.set_dir(direction)
         return super().move()
-    
-#==========================================
-# Purpose: Foods(Food?) represent pellets for
-#          snakes to 'consume'
-#          They inherit from GameObj
-#
-# Instance variables: Inherited
-#                     instance - reference to oval representing pellet - int which is ID for game canvas
-#
-# Methods: __init__ - overload method, provides additional code;
-#                     initializes instance as red oval
-#         create_pellet - randomly chooses available spot, deletes instance and makes new one at spot
-#==========================================
+
+# instance - reference to oval representing pellet - int which is ID for game canvas
+# create_pellet - randomly chooses available spot, deletes instance and makes new one at spot
 class Food(GameObj):
 
     def __init__(self, game, start_x, start_y, color):
@@ -578,15 +469,6 @@ class Food(GameObj):
         self.canvas.delete(self.instance)
         self.instance = self.canvas.create_oval(self.x, self.y, self.x + 30, self.y + 30, fill='red')
 
-#==========================================
-# Purpose: Player2s represent the second player
-#         They inherit from MainPlayer
-#
-# Instance variables: Inherited
-#
-# Methods: __init__ - overload method, provides additional code;
-#                     changes default color, start position, velocity
-#==========================================
 class Player2(MainPlayer):
 
     def __init__(self, game, start_x=300, start_y=330, color='blue'):
