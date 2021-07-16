@@ -14,7 +14,7 @@ from abc import ABC, abstractmethod
 #          forget_menu - makes pack manager 'forget' menu frame, no longer displays, but keeps for retrieval
 #          invoke_menu - makes pack manager re-pack menu frame
 
-class SnakeGUI(tk.Tk):
+class SnakeApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.geometry('660x660')
@@ -38,6 +38,8 @@ class SnakeGUI(tk.Tk):
     def invoke_menu(self):
         self.menu.pack()
 
+    def run(self):
+        tk.mainloop()
 
 # Purpose: GameSelectorFrame objects represent an option for the SnakeGUI menu.
 #          They create a frame where the user can see the game they can choose
@@ -327,11 +329,6 @@ class CompetitiveGame(TwoPlayerGame):
         super().reset_snakes()
         self.player.clash(self.player2)
 
-# Instance variables: game - game object in which the GameObj is being instantiated - (ClassicGame type)
-#                     x - GameObj's x position (corner) - int
-#                     y - GameObj's y position (corner) - int
-#                     color - GameObj's (fill) color - str
-#                     canvas - canvas of GameObj's game
 class GameObj(ABC):
     @abstractmethod
     def __init__(self, game, start_x, start_y, color):
@@ -372,7 +369,8 @@ class Snake(GameObj):
         self.segments.append(self.canvas.create_rectangle(self.x, self.y, self.x + 30, self.y + 30, fill=self.color))
 
     def forward(self):
-        self.x, self.y = (sum(pair) for pair in zip([self.x, self.y], [self.vx, self.vy]))  # generator expression more efficient, don't need to store/reference iterable
+        self.x = self.x + self.vx
+        self.y = self.y + self.vy
 
     def move_valid(self):
         if (self.x < 30 or self.x > 600) or (self.y < 30 or self.y > 600):  # check bounds
@@ -478,5 +476,4 @@ class Player2(MainPlayer):
         self.vx = -30
 
 if __name__ == '__main__':
-    SnakeGUI()
-    tk.mainloop()
+    SnakeApp().run()
