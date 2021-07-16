@@ -1,5 +1,6 @@
 import tkinter as tk
 import random
+from abc import ABC, abstractmethod
 
 
 # Purpose: SnakeGUI objects represent an instance of the window where the game is managed.
@@ -331,7 +332,8 @@ class CompetitiveGame(TwoPlayerGame):
 #                     y - GameObj's y position (corner) - int
 #                     color - GameObj's (fill) color - str
 #                     canvas - canvas of GameObj's game
-class GameObj:
+class GameObj(ABC):
+    @abstractmethod
     def __init__(self, game, start_x, start_y, color):
         self.game = game
         self.x = start_x
