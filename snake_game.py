@@ -363,7 +363,7 @@ class Snake(GameObj):
                   
                   'w': (0, -30), 'a': (-30, 0),
                   's': (0, 30), 'd': (30, 0),}
-    
+    @abstractmethod
     def __init__(self, game, start_x, start_y, color):
         super().__init__(game, start_x, start_y, color)
         self.deadly_snakes = []
@@ -395,7 +395,7 @@ class Snake(GameObj):
         if self.move_valid():
             self.update()  # updates food as well
             return True
-    
+
     def set_dir(self, direction):
         self.vx, self.vy = self.velocities[direction]
 
