@@ -197,8 +197,7 @@ class ClassicGame:
             else:
                 self.paused = True  # keeps snakes from doing stuff during sequence
                 self.canvas.delete(self.pause_message)
-                self.switch_snake_visibility(times=6)
-                
+                self.end_sequence(times=6) # snake visibilty switches 6 times
         else:
             self.GUI.after(100, self.gameloop)
 
@@ -226,14 +225,14 @@ class ClassicGame:
         for segment in snake.segments:
             self.canvas.itemconfig(segment, state=state)
 
-    def switch_snake_visibility(self, times):
+    def end_sequence(self, times):
         if times == 0: 
             self.over_frame = GameOverFrame(self)
             self.game_over = True
             return
         new_state = "normal" if times % 2 else "hidden"
         for snake in self.snakes: self.switch_visibility(snake, new_state)
-        self.GUI.after(200, lambda: self.switch_snake_visibility(times-1))
+        self.GUI.after(200, lambda: self.end_sequence(times-1))        
 
     def goto_menu(self):
         self.over_frame.destroy()
