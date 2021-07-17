@@ -164,7 +164,7 @@ class ClassicGame:
         self.canvas.pack()
         self.make_snakes()
         self.bind_keys(['<Up>', '<Left>', '<Down>', '<Right>'], self.player)  # order compliments wasd
-        self.GUI.bind('r', lambda event: self.reset())
+        self.GUI.bind('r', lambda _: self.reset())
         self.GUI.bind('<space>', self.pause)
         self.start_game()
 
