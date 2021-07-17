@@ -1,7 +1,7 @@
 import tkinter as tk
 import random
 from abc import ABC, abstractmethod
-
+from collections import deque
 
 # Purpose: SnakeGUI objects represent an instance of the window where the game is managed.
 #          They create a graphical user interface where the user can see the
@@ -365,7 +365,7 @@ class Snake(GameObj):
         super().__init__(game, start_x, start_y, color)
         self.deadly_snakes = []
         self.vx, self.vy = self.velocities['Right']
-        self.segments = []
+        self.segments = deque()
         self.segments.append(self.canvas.create_rectangle(self.x, self.y, self.x + 30, self.y + 30, fill=self.color))
 
     def forward(self):
@@ -382,11 +382,11 @@ class Snake(GameObj):
         return True
 
     def update(self):
-        self.segments.insert(0, self.canvas.create_rectangle(self.x, self.y, self.x + 30, self.y + 30, fill=self.color)) # update - add segment at pos
+        self.segments.append(self.canvas.create_rectangle(self.x, self.y, self.x + 30, self.y + 30, fill=self.color)) # update - add segment at pos
         if (self.x == self.game.pellet.x and self.y == self.game.pellet.y):
             self.game.pellet.create_pellet()
         else:
-            self.canvas.delete(self.segments.pop())
+            self.canvas.delete(self.segments.popleft())
 
     def move(self):
         self.forward()
