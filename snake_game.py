@@ -169,7 +169,6 @@ class ClassicGame:
         self.canvas = tk.Canvas(self.GUI, width = 660, height = 660)
         self.canvas.pack()
         self.make_snakes()
-          # wait_variable requires tkinter variable
         self.bind_keys(['<Up>', '<Left>', '<Down>', '<Right>'], self.player)  # order compliments wasd
         self.GUI.bind('r', self.reset)
         self.GUI.bind('<space>', self.pause)
@@ -192,18 +191,16 @@ class ClassicGame:
         self.gameloop()
         
     def gameloop(self):
-        if not self.game_over:
-            if not self.paused:
-                if all(snake.move() for snake in self.snakes): 
-                    self.GUI.after(100, self.gameloop)
-                else:
-                    self.paused = True  # keeps snakes from doing stuff during sequence
-                    self.canvas.delete(self.pause_message)
-                    self.death_sequence()
-                    self.over_frame = GameOverFrame(self)
-                    self.game_over = True
-            else:
+        if not self.paused:
+            if all(snake.move() for snake in self.snakes): 
                 self.GUI.after(100, self.gameloop)
+            else:
+                self.paused = True  # keeps snakes from doing stuff during sequence
+                self.canvas.delete(self.pause_message)
+                self.switch_snake_visibility(times=6)
+                
+        else:
+            self.GUI.after(100, self.gameloop)
 
     def reset_snakes(self):
         for snake in self.snakes:
@@ -229,17 +226,14 @@ class ClassicGame:
         for segment in snake.segments:
             self.canvas.itemconfig(segment, state=state)
 
-    def switch_snake_visibility(self, snakes_hidden):
-        hidden = snakes_hidden.get()
-        new_state = "normal" if hidden else "hidden"
+    def switch_snake_visibility(self, times):
+        if times == 0: 
+            self.over_frame = GameOverFrame(self)
+            self.game_over = True
+            return
+        new_state = "normal" if times % 2 else "hidden"
         for snake in self.snakes: self.switch_visibility(snake, new_state)
-        snakes_hidden.set(not hidden)
-
-    def death_sequence(self):
-        snakes_hidden = tk.BooleanVar(False)
-        for i in range(6):
-            self.GUI.after(200, lambda: self.switch_snake_visibility(snakes_hidden))
-            self.canvas.wait_variable(snakes_hidden)
+        self.GUI.after(200, lambda: self.switch_snake_visibility(times-1))
 
     def goto_menu(self):
         self.over_frame.destroy()
