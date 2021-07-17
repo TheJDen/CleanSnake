@@ -435,12 +435,9 @@ class Enemy(Snake):
         super().__init__(game, start_x, start_y, color)
 
     def find_dir(self):
-        if self.x < self.game.pellet.x:
-            return 'Right'
-        elif self.x > self.game.pellet.x:
-            return 'Left'
-        elif self.y > self.game.pellet.y:
-            return 'Up'
+        if self.x < self.game.pellet.x: return 'Right'
+        elif self.x > self.game.pellet.x: return 'Left'
+        elif self.y > self.game.pellet.y: return 'Up'
         return 'Down'
 
     def move(self):
@@ -457,13 +454,13 @@ class Food(GameObj):
         self.instance = self.canvas.create_oval(self.x, self.y, self.x + 30, self.y + 30, fill='red')
 
     def create_pellet(self):
-        available_spots = [[i, j] for i in range(30, 600, 30) for j in range(30, 600, 30)]
+        available_spots = {(i, j) for i in range(30, 600, 30) for j in range(30, 600, 30)}
         for snake in self.game.snakes:
             for segment in snake.segments:
-                unavailable_spot = snake.canvas.coords(segment)[:2]
+                unavailable_spot = tuple(snake.canvas.coords(segment)[:2])
                 if unavailable_spot in available_spots:  # check is necessary because consecutive food gathering/collisions cause errors
                     available_spots.remove(unavailable_spot)
-        self.x, self.y = random.choice(available_spots)
+        self.x, self.y = random.choice(tuple(available_spots))
         self.canvas.delete(self.instance)
         self.instance = self.canvas.create_oval(self.x, self.y, self.x + 30, self.y + 30, fill='red')
 
