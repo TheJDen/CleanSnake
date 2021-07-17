@@ -115,16 +115,12 @@ class GameOverFrame(tk.Frame):
 
         self.restart_str = tk.Label(self, text='Press \'R\' to restart')
         self.restart_str.pack()
-        
-        
 
     def menu_click(self):
         self.game.goto_menu()
 
     def restart_click(self):
-        self.game.reset(None)  # reset requires an 'event' just because it gets binded to a key with tkinter
-        # 'event' is never actually used in reset, so garbage can be passed in to use reset in other contexts
-
+        self.game.reset()
 #==========================================
 # Purpose: ClassicGame objects represent an instance of the Snake Game itself.
 #          They create a tkinter canvas where the user can see the board and
@@ -168,7 +164,7 @@ class ClassicGame:
         self.canvas.pack()
         self.make_snakes()
         self.bind_keys(['<Up>', '<Left>', '<Down>', '<Right>'], self.player)  # order compliments wasd
-        self.GUI.bind('r', self.reset)
+        self.GUI.bind('r', lambda event: self.reset())
         self.GUI.bind('<space>', self.pause)
         self.start_game()
 
@@ -199,7 +195,7 @@ class ClassicGame:
         for snake in self.snakes:
             snake.__init__(self)
 
-    def reset(self, event):
+    def reset(self):
         if not self.game_over: return
         self.over_frame.destroy()
         self.canvas.delete(tk.ALL)
