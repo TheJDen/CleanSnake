@@ -432,7 +432,7 @@ class MainPlayer(Snake):
 class Enemy(Snake):
     
     def __init__(self, game, start_x=30, start_y=30, color='purple'):
-        super().__init__(game, start_x=start_x, start_y=start_y, color=color)
+        super().__init__(game, start_x, start_y, color)
 
     def find_dir(self):
         if self.x < self.game.pellet.x:
@@ -470,7 +470,7 @@ class Food(GameObj):
 class Player2(MainPlayer):
 
     def __init__(self, game, start_x=300, start_y=330, color='blue'):
-        super().__init__(game, start_x=start_x, start_y=start_y, color=color)
+        super().__init__(game, start_x, start_y, color)
         self.vx = -30
 
 if __name__ == '__main__':
