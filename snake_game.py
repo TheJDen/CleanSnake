@@ -22,7 +22,7 @@ class SnakeApp(tk.Tk):
         self.menu = tk.Frame(self)
         game_options = [ClassicGame, EnemyClassicGame, TwoPlayerGame, CompetitiveGame]
         column_headers =  ['Single-Player (Arrow Keys)', 'Two-Player (WASD)']
-        #  construct menu
+        #  initialize menu
         tk.Label(self.menu, text='Game Options (Click)').grid(row=0, columnspan=2)
         for col in range(2):
             tk.Label(self.menu, text=column_headers[col]).grid(column=col, row=1)
@@ -30,7 +30,6 @@ class SnakeApp(tk.Tk):
                 game_type = game_options[2 * col + grid_row]
                 GameSelectorFrame(self.menu, game_type).grid(column=col, row=grid_row + 2)
                 
-        self.menu.pack()
         
     def forget_menu(self):
         self.menu.pack_forget()
@@ -39,6 +38,7 @@ class SnakeApp(tk.Tk):
         self.menu.pack()
 
     def run(self):
+        self.invoke_menu()
         tk.mainloop()
 
 # Purpose: GameSelectorFrame objects represent an option for the SnakeGUI menu.
