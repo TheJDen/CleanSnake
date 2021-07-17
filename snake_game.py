@@ -16,6 +16,20 @@ class TkGUI(GUI):
         window.geometry(str(x_dim) + 'x' + str(y_dim))
         window.title(title)
         return window
+
+class MainMenu(tk.Frame):
+
+    def __init__(self, frame, game_options, column_headers):
+        super().__init__(frame)
+        tk.Label(self, text='Game Options (Click)').grid(row=0, columnspan=2)
+        for col in range(2):
+            tk.Label(self, text=column_headers[col]).grid(column=col, row=1)
+            for grid_row in range(2):
+                game_type = game_options[2 * col + grid_row]
+                GameSelectorFrame(self, game_type).grid(column=col, row=grid_row + 2)
+
+
+
 # Purpose: SnakeGUI objects represent an instance of the window where the game is managed.
 #          They create a graphical user interface where the user can see the
 #          game in a separate window, inherits from tkinter Tk
@@ -36,15 +50,7 @@ class SnakeApp(tk.Tk):
         self.title('Snake')
         game_options = [ClassicGame, EnemyClassicGame, TwoPlayerGame, CompetitiveGame]
         column_headers =  ['Single-Player (Arrow Keys)', 'Two-Player (WASD)']
-        self.menu = tk.Frame(self)
-        #  initialize menu
-        tk.Label(self.menu, text='Game Options (Click)').grid(row=0, columnspan=2)
-        for col in range(2):
-            tk.Label(self.menu, text=column_headers[col]).grid(column=col, row=1)
-            for grid_row in range(2):
-                game_type = game_options[2 * col + grid_row]
-                GameSelectorFrame(self.menu, game_type).grid(column=col, row=grid_row + 2)
-                
+        self.menu = MainMenu(self, game_options, column_headers)                
         
     def forget_menu(self):
         self.menu.pack_forget()
