@@ -3,6 +3,19 @@ import random
 from abc import ABC, abstractmethod
 from collections import deque
 
+class GUI(ABC):
+
+    @abstractmethod
+    def main_window(title, x_dim, y_dim):
+        pass
+
+class TkGUI(GUI):
+
+    def main_window(title, x_dim, y_dim):
+        window = tk.Tk()
+        window.geometry(str(x_dim) + 'x' + str(y_dim))
+        window.title(title)
+        return window
 # Purpose: SnakeGUI objects represent an instance of the window where the game is managed.
 #          They create a graphical user interface where the user can see the
 #          game in a separate window, inherits from tkinter Tk
@@ -13,6 +26,8 @@ from collections import deque
 #                     initializes window, constructs menu, packs menu into window
 #          forget_menu - makes pack manager 'forget' menu frame, no longer displays, but keeps for retrieval
 #          invoke_menu - makes pack manager re-pack menu frame
+
+
 
 class SnakeApp(tk.Tk):
     def __init__(self):
