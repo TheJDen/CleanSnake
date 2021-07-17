@@ -207,11 +207,11 @@ class ClassicGame:
             snake.__init__(self)
 
     def reset(self, event):
-        if self.game_over:
-            self.over_frame.destroy()
-            self.canvas.delete(tk.ALL)
-            self.reset_snakes()
-            self.start_game()
+        if not self.game_over: return
+        self.over_frame.destroy()
+        self.canvas.delete(tk.ALL)
+        self.reset_snakes()
+        self.start_game()
 
     def pause(self, event):
         self.paused = not self.paused
