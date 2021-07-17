@@ -62,14 +62,13 @@ class GameSelectorFrame(tk.Frame):
         self.game = game_class
         # construct contents
         self.game_image = tk.PhotoImage(file=self.game.image_file)
+        
         self.game_button = tk.Button(self, image=self.game_image)
-        #, bd=4, relief='raised')
         self.game_button.pack()
+        self.game_button.configure(command=self.button_click)
 
         self.game_title = tk.Label(self, text=self.game.title)
         self.game_title.pack()
-
-        self.game_button.configure(command=self.button_click)
 
     def button_click(self):
         self.GUI.forget_menu()
