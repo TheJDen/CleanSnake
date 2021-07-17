@@ -190,7 +190,7 @@ class ClassicGame:
         self.canvas = tk.Canvas(self.GUI, width = 660, height = 660)
         self.canvas.pack()
         self.make_snakes()
-        self.snakes_hidden = tk.BooleanVar(False)  # wait_variable requires tkinter variable
+          # wait_variable requires tkinter variable
         self.bind_keys(['<Up>', '<Left>', '<Down>', '<Right>'], self.player)  # order compliments wasd
         self.GUI.bind('r', self.reset)
         self.GUI.bind('<space>', self.pause)
@@ -240,15 +240,21 @@ class ClassicGame:
     def pause(self, event):
         self.paused = not self.paused
 
-    def switch_snake_visibility(self):
-        for snake in self.snakes:
-            snake.switch_visibility(self.snakes_hidden)
-        self.snakes_hidden.set(not self.snakes_hidden.get())
+    def switch_visibility(self, snake, state):
+        for segment in snake.segments:
+            self.canvas.itemconfig(segment, state=state)
+
+    def switch_snake_visibility(self, snakes_hidden):
+        hidden = snakes_hidden.get()
+        new_state = "normal" if hidden else "hidden"
+        for snake in self.snakes: self.switch_visibility(snake, new_state)
+        snakes_hidden.set(not hidden)
 
     def death_sequence(self):
+        snakes_hidden = tk.BooleanVar(False)
         for i in range(6):
-            self.GUI.after(200, self.switch_snake_visibility)
-            self.canvas.wait_variable(self.snakes_hidden)
+            self.GUI.after(200, lambda: self.switch_snake_visibility(snakes_hidden))
+            self.canvas.wait_variable(snakes_hidden)
 
     def goto_menu(self):
         self.over_frame.destroy()
@@ -399,10 +405,7 @@ class Snake(GameObj):
     def set_dir(self, direction):
         self.vx, self.vy = self.velocities[direction]
 
-    def switch_visibility(self, hidden):
-        new_state = ['hidden', 'normal'][hidden.get()]
-        for segment in self.segments:
-            self.canvas.itemconfig(segment, state=new_state)
+    
 
     def clash(self, other):
         self.deadly_snakes.append(other)
