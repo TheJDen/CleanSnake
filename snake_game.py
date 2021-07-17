@@ -127,13 +127,17 @@ class GameOverFrame(tk.Frame):
             self.score_str.pack()
 
         self.menu_button = tk.Button(self, text='MENU', font=('System', 15))
-        self.restart_button = tk.Button(self, text='RESTART', font=('System', 15))
         self.menu_button.pack()
+        self.menu_button.configure(command=self.menu_click)
+
+        self.restart_button = tk.Button(self, text='RESTART', font=('System', 15))
         self.restart_button.pack()
+        self.restart_button.configure(command=self.restart_click)
+
         self.restart_str = tk.Label(self, text='Press \'R\' to restart')
         self.restart_str.pack()
-        self.restart_button.configure(command=self.restart_click)
-        self.menu_button.configure(command=self.menu_click)
+        
+        
 
     def menu_click(self):
         self.game.goto_menu()
