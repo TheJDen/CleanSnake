@@ -245,20 +245,7 @@ class ClassicGame:
         self.over_frame.destroy()
         self.canvas.destroy()
         self.GUI.invoke_menu()
-        #del self  # deletes no longer needed game object
 
-
-# Class Variables: variables which don't require instantiation and are 'globally true' for the class
-#                  title - string representing game mode's title
-#                  image_file - string which is name of the image file representing the game mode
-#
-#                     enemy - reference representing enemy Snake - Enemy object
-#
-# Methods: make_snakes - overload method, provides additional code
-#                     appends Enemy snake to game's snakes, sets it against player
-#         reset_snakes - overload method, provides additional code
-#                        reminds game Enemy and MainPlayer should be set against one another
-#                        after re-initialization
 class EnemyClassicGame(ClassicGame):
 
     title = "Classic Game with Enemy"
@@ -275,16 +262,6 @@ class EnemyClassicGame(ClassicGame):
         super().reset_snakes()
         self.player.clash(self.enemy)
 
-
-#                  title - string representing game mode's title
-#                  image_file - string which is name of the image file representing the game mode
-#
-#                     player2 - reference representing second player Snake - Player2 object
-#
-# Methods: make_snakes - overload method, provides additional code
-#                     appends PLayer2 Snake to game's snakes
-#          start_game - overload method, provides additional code
-#                       binds the wasd keys to the Player2 Snake
 
 class TwoPlayerGame(ClassicGame):
 
@@ -318,14 +295,6 @@ class TwoPlayerGame(ClassicGame):
             messages.append(score_str)
         return messages
 
-#                  title - string representing game mode's title
-#                  image_file - string which is name of the image file representing the game mode
-#
-# Methods: make_snakes - overload method, provides additional code
-#                     sets MainPlayer against Player2
-#         reset_snakes - overload method, provides additional code
-#                        reminds game MainPlayer and Player2 should be set against one another
-#                        after re-initialization
 class CompetitiveGame(TwoPlayerGame):
 
     title = "Two-Player Game - Aggresive"
