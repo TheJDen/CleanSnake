@@ -13,13 +13,13 @@ class MainMenu(tk.Frame):
             for col in range(2):
                 tk.Label(self, text=column_headers[col]).grid(column=col, row=1)
                 game_type = game_options[2 * col + row]
-                GameSelectorFrame(self, game_type).grid(column=col, row=grid_row)
+                GameOption(self, game_type).grid(column=col, row=grid_row)
 
 
 
 # Purpose: window where the game is managed.
 #          They create a graphical user interface where the user can see the
-#          game in a separate window, inherits from tkinter Tk
+#          game in a separate window
 
 class SnakeApp(tk.Tk):
     def __init__(self):
@@ -40,7 +40,7 @@ class SnakeApp(tk.Tk):
         self.invoke_menu()
         tk.mainloop()
 
-# Purpose: GameSelectorFrame objects represent an option for the SnakeGUI menu.
+# Purpose: GameOption objects represent an option for the SnakeGUI menu.
 #          They create a frame where the user can see the game they can choose
 #          inherits from tkinter Frame
 #
@@ -55,7 +55,7 @@ class SnakeApp(tk.Tk):
 #                     initializes frame, constructs button w/ image and labels, configures button
 #          button_click - function for button to execute upon clicking
 #                         'forgets' menu, instantiates game
-class GameSelectorFrame(tk.Frame):
+class GameOption(tk.Frame):
     def __init__(self, master, game_class):
         super().__init__(master)
         self.container = master
