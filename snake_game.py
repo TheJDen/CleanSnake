@@ -8,11 +8,12 @@ class MainMenu(tk.Frame):
     def __init__(self, frame, game_options, column_headers):
         super().__init__(frame)
         tk.Label(self, text='Game Options (Click)').grid(row=0, columnspan=2)
-        for col in range(2):
-            tk.Label(self, text=column_headers[col]).grid(column=col, row=1)
-            for grid_row in range(2):
-                game_type = game_options[2 * col + grid_row]
-                GameSelectorFrame(self, game_type).grid(column=col, row=grid_row + 2)
+        for row in range(2):
+            grid_row = row + 2 # options and headers take first two
+            for col in range(2):
+                tk.Label(self, text=column_headers[col]).grid(column=col, row=1)
+                game_type = game_options[2 * col + row]
+                GameSelectorFrame(self, game_type).grid(column=col, row=grid_row)
 
 
 
