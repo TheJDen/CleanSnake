@@ -94,37 +94,16 @@ class GameSelectorFrame(tk.Frame):
 #          restart_click - function for button to execute upon clicking
 #                         restarts game
 class GameOverFrame(tk.Frame):
-    def __init__(self, game_obj):
-        self.GUI = game_obj.GUI
-        super().__init__(self.GUI, bd=4, relief='raised')
-        self.game = game_obj
+    def __init__(self, game):
+        self.GUI = game.GUI
+        super().__init__(game.GUI, bd=4, relief='raised')
+        self.game = game
         # determine and add end-game message / scoring
-        if type(self.game) == TwoPlayerGame or type(self.game) == CompetitiveGame:
-            self.place(relx=0.28, rely=0.35)  # places on tkinter window rather than packing after
-            winner = None
-            player_scores = [len(player.segments) for player in self.game.snakes]
-            player1_score, player2_score = player_scores
-            if player1_score > player2_score:
-                winner = 'PLAYER 1'
-            elif player1_score < player2_score:
-                winner = 'PLAYER 2'
-            else:
-                win_str = 'DRAW!'
-            if winner:
-                win_str = winner + ' WINS!'
-            
-            self.win_banner = tk.Label(self, text=win_str, font=('System', 30))
-            self.win_banner.pack()
-            for player, score in enumerate(player_scores):
-                self.score_str = tk.Label(self, text='PLAYER {player} SCORE: '.format(player= player + 1) +  str(player_scores[player]), font=('System', 30))
-                self.score_str.pack()
-        else:
-            self.place(relx=0.36, rely=0.36)  # places on tkinter window rather than packing after
-            
-            self.over_str = tk.Label(self, text='GAME OVER', font=('System', 30))
-            self.over_str.pack()
-            self.score_str = tk.Label(self, text='SCORE: ' +  str(len(game_obj.player.segments)), font=('System', 30))
-            self.score_str.pack()
+        x, y = game.place()
+        self.place(relx=x, rely=y) # places on tkinter window rather than packing after
+        for message in game.results():
+            msg_banner = tk.Label(self, text=message, font=('System', 30))
+            msg_banner.pack()
 
         self.menu_button = tk.Button(self, text='MENU', font=('System', 15))
         self.menu_button.pack()
@@ -240,6 +219,12 @@ class ClassicGame:
     def pause(self, event):
         self.paused = not self.paused
 
+    def place(self):
+        return (0.36, 0.36)
+
+    def results(self):
+        return ["GAME OVER", f"SCORE: {len(self.player.segments)}"]
+
     def switch_visibility(self, snake, state):
         for segment in snake.segments:
             self.canvas.itemconfig(segment, state=state)
@@ -315,6 +300,23 @@ class TwoPlayerGame(ClassicGame):
     def start_game(self):
         self.bind_keys(['<w>', '<a>', '<s>', '<d>'], self.player2)  # order compliments wasd
         super().start_game()
+
+    def place(self):
+        return (0.28, 0.35)
+
+    def results(self):
+        winner = None
+        player_scores = [len(player.segments) for player in self.snakes]
+        p1_score, p2_score = player_scores
+        if p1_score > p2_score: winner = "PLAYER 1"
+        elif p1_score < p2_score: winner = "PLAYER 2"
+        else: win_str = "DRAW!"
+        if winner: win_str = winner + " WINS!"
+        messages = [win_str]
+        for i, score in enumerate(player_scores):
+            score_str = f"PLAYER {i+1} SCORE: {score}"
+            messages.append(score_str)
+        return messages
 
 #                  title - string representing game mode's title
 #                  image_file - string which is name of the image file representing the game mode
