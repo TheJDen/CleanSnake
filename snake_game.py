@@ -191,15 +191,11 @@ class ClassicGame:
         self.gameloop()
         
     def gameloop(self):
-        if not self.paused:
-            if all(snake.move() for snake in self.snakes): 
-                self.GUI.after(100, self.gameloop)
-            else:
-                self.paused = True  # keeps snakes from doing stuff during sequence
-                self.canvas.delete(self.pause_message)
-                self.end_sequence(times=6) # snake visibilty switches 6 times
-        else:
-            self.GUI.after(100, self.gameloop)
+        if not self.paused and not all(snake.move() for snake in self.snakes): 
+            self.paused = True  # keeps snakes from doing stuff during sequence
+            self.canvas.delete(self.pause_message)
+            self.end_sequence(times=6) # snake visibilty switches 6 times
+        else: self.GUI.after(100, self.gameloop)
 
     def reset_snakes(self):
         for snake in self.snakes:
