@@ -16,7 +16,7 @@ class MainMenu(tk.Frame):
 
 
 
-# Purpose: SnakeGUI objects represent an instance of the window where the game is managed.
+# Purpose: window where the game is managed.
 #          They create a graphical user interface where the user can see the
 #          game in a separate window, inherits from tkinter Tk
 
@@ -62,7 +62,7 @@ class GameSelectorFrame(tk.Frame):
         self.game = game_class
         # construct contents
         self.game_image = tk.PhotoImage(file=self.game.image_file)
-        
+
         self.game_button = tk.Button(self, image=self.game_image)
         self.game_button.pack()
         self.game_button.configure(command=self.button_click)
@@ -86,7 +86,7 @@ class GameSelectorFrame(tk.Frame):
 #                     menu_button - tk Button which returns user to menu upon clicking
 #                     restart_button - tk Button which restarts game upon clicking
 #
-# Methods: __init__ - overload method, provides code for constructor upon instantiation;
+# Methods: 
 #                     initializes frame, packs end-game messages, constructs/configures option buttons
 #          menu_click - function for menu button to execute upon clicking
 #                         brings user to menu
@@ -206,8 +206,8 @@ class ClassicGame:
     def start_game(self):
         self.pause_message = self.canvas.create_text(330, 15, text = 'Press Space to pause')
         self.board = self.canvas.create_rectangle(30, 30, 630, 630)
-        pellet_spawn = random.choice([[i, j] for i in range(30, 600, 30) for j in range(30, 600, 30) if (i,j) != (330, 330)])  # prevents spawn on player
-        self.pellet = Food(self, pellet_spawn[0], pellet_spawn[1], 'red')
+        pellet_x, pellet_y = random.choice([(i, j) for i in range(30, 600, 30) for j in range(30, 600, 30) if (i,j) != (330, 330)])  # prevents spawn on player
+        self.pellet = Food(self, pellet_x, pellet_y, 'red')
         self.game_over, self.paused = False, False
         self.gameloop()
         
@@ -253,7 +253,7 @@ class ClassicGame:
         self.over_frame.destroy()
         self.canvas.destroy()
         self.GUI.invoke_menu()
-        del self  # deletes no longer needed game object
+        #del self  # deletes no longer needed game object
 
 
 # Class Variables: variables which don't require instantiation and are 'globally true' for the class
