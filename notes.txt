@@ -1,0 +1,13 @@
+class GUI(ABC):
+
+    @abstractmethod
+    def main_window(title, x_dim, y_dim):
+        pass
+
+class TkGUI(GUI):
+
+    def main_window(title, x_dim, y_dim):
+        window = tk.Tk()
+        window.geometry(str(x_dim) + 'x' + str(y_dim))
+        window.title(title)
+        return window
