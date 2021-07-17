@@ -34,9 +34,9 @@ class SnakeApp(tk.Tk):
         super().__init__()
         self.geometry('660x660')
         self.title('Snake')
-        self.menu = tk.Frame(self)
         game_options = [ClassicGame, EnemyClassicGame, TwoPlayerGame, CompetitiveGame]
         column_headers =  ['Single-Player (Arrow Keys)', 'Two-Player (WASD)']
+        self.menu = tk.Frame(self)
         #  initialize menu
         tk.Label(self.menu, text='Game Options (Click)').grid(row=0, columnspan=2)
         for col in range(2):
