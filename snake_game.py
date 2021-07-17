@@ -145,8 +145,6 @@ class GameOverFrame(tk.Frame):
 #                     game_over - Boolean that represents if game is over - True/False Boolean
 #                     paused - Boolean that represents if snakes should move- True/False Boolean
 
-# Methods: __init__ - overload method, provides code for constructor upon instantiation;
-#                     initializes variables, binds keypress commands to window, calls
 #                     helper to initialize more variables and start the game
 #         make_snakes - creates player snake and adds it to the game's snakes
 #         bind_keys - binds keys to snake movement
@@ -272,16 +270,14 @@ class TwoPlayerGame(ClassicGame):
 
     def results(self):
         winner = None
-        player_scores = [len(player.segments) for player in self.snakes]
-        p1_score, p2_score = player_scores
+        scores = [len(player.segments) for player in self.snakes]
+        p1_score, p2_score = scores
         if p1_score > p2_score: winner = "PLAYER 1"
         elif p1_score < p2_score: winner = "PLAYER 2"
-        else: win_str = "DRAW!"
-        if winner: win_str = winner + " WINS!"
+        win_str = f"{winner} WINS!" if winner else "DRAW!"
         messages = [win_str]
-        for i, score in enumerate(player_scores):
-            score_str = f"PLAYER {i+1} SCORE: {score}"
-            messages.append(score_str)
+        for i, score in enumerate(scores):
+            messages.append(f"PLAYER {i+1} SCORE: {score}")
         return messages
 
 class CompetitiveGame(TwoPlayerGame):
