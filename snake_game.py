@@ -64,16 +64,16 @@ class GameOption(tk.Frame):
         # construct contents
         self.game_image = tk.PhotoImage(file=self.game.image_file)
 
+        def button_click():
+            self.GUI.forget_menu()
+            self.game(self.GUI, tk.Canvas(self.GUI, width = 660, height = 660))
+
         self.game_button = tk.Button(self, image=self.game_image)
+        self.game_button.configure(command=button_click)
         self.game_button.pack()
-        self.game_button.configure(command=self.button_click)
 
         self.game_title = tk.Label(self, text=self.game.title)
         self.game_title.pack()
-
-    def button_click(self):
-        self.GUI.forget_menu()
-        self.game(self.GUI, tk.Canvas(self.GUI, width = 660, height = 660))
 
 # Purpose: GameOverFrame objects represent a 'mini menu' which comes up upon ends of games.
 #          They create a frame where the user can see their game outcome, score, and options

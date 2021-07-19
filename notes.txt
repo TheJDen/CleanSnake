@@ -4,6 +4,29 @@ class GUI(ABC):
     def main_window(title, x_dim, y_dim):
         pass
 
+    @abstractmethod
+    def frame(title, x_dim, y_dim):
+        pass
+
+class TkGUI(GUI):
+
+    def main_window(title, x_dim, y_dim):
+        window = tk.Tk()
+        window.geometry(str(x_dim) + 'x' + str(y_dim))
+        window.title(title)
+        return window
+
+class MainWindow(ABC):
+    pass
+
+class Frame(ABC):
+    pass
+
+# class Button(ABC):
+
+#     def 
+
+
 class TkGUI(GUI):
 
     def main_window(title, x_dim, y_dim):
