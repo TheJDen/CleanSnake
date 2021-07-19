@@ -13,7 +13,7 @@ class MainMenu(tk.Frame):
             for col in range(2):
                 tk.Label(self, text=column_headers[col]).grid(column=col, row=1)
                 game_type = game_options[2 * col + row]
-                game_option = GameOption(tk.Frame(self), self, game_type)
+                game_option = GameOption(tk.Frame(self), frame, game_type)
                 game_option.window.grid(column=col, row=grid_row)
 
 
@@ -57,17 +57,16 @@ class SnakeApp(tk.Tk):
 #          button_click - function for button to execute upon clicking
 #                         'forgets' menu, instantiates game
 class GameOption:
-    def __init__(self, window, master, game_class):
+    def __init__(self, window, main_window, game_class):
         self.window = window
-        self.container = master
-        self.GUI = self.container.master
+        self.main_window = main_window
         self.game = game_class
         # construct contents
         self.game_image = tk.PhotoImage(file=self.game.image_file)
 
         def button_click():
-            self.GUI.forget_menu()
-            self.game(self.GUI, tk.Canvas(self.GUI, width = 660, height = 660))
+            self.main_window.forget_menu()
+            self.game(self.main_window, tk.Canvas(self.main_window, width = 660, height = 660))
 
         self.game_button = tk.Button(self.window, image=self.game_image)
         self.game_button.configure(command=button_click)
