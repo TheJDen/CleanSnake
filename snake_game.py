@@ -73,7 +73,7 @@ class GameOption(tk.Frame):
 
     def button_click(self):
         self.GUI.forget_menu()
-        self.game(self.GUI)
+        self.game(self.GUI, tk.Canvas(self.GUI, width = 660, height = 660))
 
 # Purpose: GameOverFrame objects represent a 'mini menu' which comes up upon ends of games.
 #          They create a frame where the user can see their game outcome, score, and options
@@ -158,9 +158,9 @@ class ClassicGame:
     title = "Classic Game"
     image_file = 'ClassicImage.png'
 
-    def __init__(self, GUI):
+    def __init__(self, GUI, canvas):
         self.GUI = GUI
-        self.canvas = tk.Canvas(self.GUI, width = 660, height = 660)
+        self.canvas = canvas
         self.canvas.pack()
         self.make_snakes()
         self.bind_keys(['<Up>', '<Left>', '<Down>', '<Right>'], self.player)  # order compliments wasd
