@@ -96,8 +96,6 @@ class GameOption:
 class GameOverPopup:
     def __init__(self, window, game):
         # determine and add end-game message / scoring
-        x, y = game.place()
-        window.place(relx=x, rely=y) # places on window rather than packing after
         for message in game.results():
             msg_banner = tk.Label(window, text=message, font=('System', 30))
             msg_banner.pack()
@@ -211,6 +209,8 @@ class ClassicGame:
     def end_sequence(self, times):
         if times == 0: 
             self.over_frame = tk.Frame(self.GUI, bd=4, relief='raised')
+            popup_x, popup_y = self.place()
+            self.over_frame.place(relx=popup_x, rely=popup_y)
             GameOverPopup(self.over_frame,self)
             self.game_over = True
             return
