@@ -304,16 +304,16 @@ class Snake(GameObj):
             return False
         for snake in self.deadly_snakes:  # check if self-snake has intersected deadly snake, can include self
             for segment in snake.segments:
-                    if [self.x, self.y] == self.canvas.coords(segment)[:2]:
+                    seg_x, seg_y, *_ = self.canvas.coords(segment)
+                    if (self.x, self.y) == (seg_x, seg_y):
                             return False
         return True
 
     def update(self):
         self.segments.append(self.canvas.create_rectangle(self.x, self.y, self.x + 30, self.y + 30, fill=self.color)) # update - add segment at pos
-        if (self.x == self.game.pellet.x and self.y == self.game.pellet.y):
-            self.game.pellet.create_pellet()
-        else:
-            self.canvas.delete(self.segments.popleft())
+        pellet = self.game.pellet
+        if (self.x, self.y) == (pellet.x, pellet.y): pellet.create_pellet()
+        else: self.canvas.delete(self.segments.popleft())
 
     def move(self):
         self.forward()
@@ -323,8 +323,6 @@ class Snake(GameObj):
 
     def set_dir(self, direction):
         self.vx, self.vy = self.velocities[direction]
-
-    
 
     def clash(self, other):
         self.deadly_snakes.append(other)
