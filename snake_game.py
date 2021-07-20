@@ -95,26 +95,25 @@ class GameOption:
 #                         restarts game
 class GameOverPopup:
     def __init__(self, window, game):
-        self.game = game
         # determine and add end-game message / scoring
         x, y = game.place()
-        window.place(relx=x, rely=y) # places on tkinter window rather than packing after
+        window.place(relx=x, rely=y) # places on window rather than packing after
         for message in game.results():
             msg_banner = tk.Label(window, text=message, font=('System', 30))
             msg_banner.pack()
 
-        self.menu_button = tk.Button(window, text='MENU', font=('System', 15))
-        self.menu_button.pack()
-        menu_click = lambda: self.game.goto_menu()
-        self.menu_button.configure(command=menu_click)
+        menu_button = tk.Button(window, text='MENU', font=('System', 15))
+        menu_button.pack()
+        menu_click = lambda: game.goto_menu()
+        menu_button.configure(command=menu_click)
 
-        self.restart_button = tk.Button(window, text='RESTART', font=('System', 15))
-        self.restart_button.pack()
-        restart_click = lambda: self.game.reset()
-        self.restart_button.configure(command=restart_click)
+        restart_button = tk.Button(window, text='RESTART', font=('System', 15))
+        restart_button.pack()
+        restart_click = lambda: game.reset()
+        restart_button.configure(command=restart_click)
 
-        self.restart_str = tk.Label(window, text='Press \'R\' to restart')
-        self.restart_str.pack()
+        restart_str = tk.Label(window, text='Press \'R\' to restart')
+        restart_str.pack()
 
 # Purpose: ClassicGame objects represent an instance of the Snake Game itself.
 #          They create a tkinter canvas where the user can see the board and
