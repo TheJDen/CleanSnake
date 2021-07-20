@@ -379,9 +379,9 @@ class Food(GameObj):
         available_spots = {(i, j) for i in range(30, 600, 30) for j in range(30, 600, 30)}
         for snake in self.game.snakes:
             for segment in snake.segments:
-                unavailable_spot = tuple(snake.canvas.coords(segment)[:2])
-                if unavailable_spot in available_spots:  # check is necessary because consecutive food gathering/collisions cause errors
-                    available_spots.remove(unavailable_spot)
+                *unavailable_spot, _, _ = snake.canvas.coords(segment) # first two elements
+                if tuple(unavailable_spot) in available_spots:  # check is necessary because consecutive food gathering/collisions cause errors
+                    available_spots.remove(tuple(unavailable_spot))
         self.x, self.y = random.choice(tuple(available_spots))
         self.canvas.delete(self.instance)
         self.instance = self.canvas.create_oval(self.x, self.y, self.x + 30, self.y + 30, fill='red')
