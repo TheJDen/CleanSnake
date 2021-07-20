@@ -129,7 +129,7 @@ class ClassicGame:
         self.make_snakes()
         self.bind_keys(['<Up>', '<Left>', '<Down>', '<Right>'], self.player)  # order compliments wasd
         self.GUI.bind('r', lambda _: self.reset())
-        self.GUI.bind('<space>', self.pause)
+        self.GUI.bind('<space>', lambda _: self.pause())
         self.start_game()
 
     def make_snakes(self):
@@ -166,7 +166,7 @@ class ClassicGame:
         self.reset_snakes()
         self.start_game()
 
-    def pause(self, event):
+    def pause(self):
         self.paused = not self.paused
 
     def place(self):
