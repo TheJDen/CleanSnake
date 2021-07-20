@@ -43,25 +43,18 @@ class SnakeApp(tk.Tk):
         tk.mainloop()
 
 # Purpose: GameOption objects represent an option for the SnakeGUI menu.
-#          They create a frame where the user can see the game they can choose
-#          inherits from tkinter Frame
-#
-# Instance variables: container - Frame where game options are presented (the menu frame)
-#                     GUI - Object where menu is contained - (original SnakeGUI object)
+
+# Instance variables: 
 #                     game - the game class which the GameSelectorFrame presents
 #                     game_image - Tkinter PhotoImage, display for game_button
 #                     game_button - Tkinter Button with game image belonging to game class, starts game mode
 #                     game_title - string belonging to game class, is mode's title
-#
-# Methods: __init__ - overload method, provides code for constructor upon instantiation;
-#                     initializes frame, constructs button w/ image and labels, configures button
-#          button_click - function for button to execute upon clicking
-#                         'forgets' menu, instantiates game
+
 class GameOption:
     def __init__(self, window, main_window, game_class):
         self.game = game_class
         self.game_image = tk.PhotoImage(file=self.game.image_file)
-        
+
         game_button = tk.Button(window, image=self.game_image)
         def button_click():
             main_window.forget_menu()
@@ -72,24 +65,8 @@ class GameOption:
         game_title = tk.Label(window, text=self.game.title)
         game_title.pack()
 
-# Purpose: GameOverFrame objects represent a 'mini menu' which comes up upon ends of games.
-#          They create a frame where the user can see their game outcome, score, and options
-#          to continue
-#
-# Instance variables: GUI - Object where GameOverFrame is contained - (original SnakeGUI object)
-#                     game - the game object which the GameOverFrame is invoked by (NOT a GameObj)
-#                     win_banner - tk Label which conveys who won in 2 player mode
-#                     over_str - tk Label which conveys game is over in 1 player mode
-#                     score_str - tk Label which conveys player scores
-#                     menu_button - tk Button which returns user to menu upon clicking
-#                     restart_button - tk Button which restarts game upon clicking
-#
-# Methods: 
-#                     initializes frame, packs end-game messages, constructs/configures option buttons
-#          menu_click - function for menu button to execute upon clicking
-#                         brings user to menu
-#          restart_click - function for button to execute upon clicking
-#                         restarts game
+# Purpose: GameOverPopup objects represent a 'mini menu' which comes up upon ends of games.
+
 class GameOverPopup:
     def __init__(self, window, game):
         # determine and add end-game message / scoring
@@ -111,7 +88,7 @@ class GameOverPopup:
         restart_str.pack()
 
 # Purpose: ClassicGame objects represent an instance of the Snake Game itself.
-#          They create a tkinter canvas where the user can see the board and
+#          They receive a tkinter canvas where the user can see the board and
 #          GameObjects
 #
 #                  title - string representing game mode's title
@@ -357,7 +334,6 @@ class Snake(GameObj):
 # Methods: __init__ - overload method, provides additional code;
 #                     makes snake dangerous to itself (basic Snake configuration)
 #         set_dir_key - changes velocity to a direction determined by a binded key
-#==========================================
 class MainPlayer(Snake):
 
     def __init__(self, game, start_x=330, start_y=330, color='green'):
@@ -378,7 +354,6 @@ class MainPlayer(Snake):
 #         find_dir - lets enemy determine where food is located
 #         move - overload method, provides additional code;
 #                determines food direction before executing move
-#==========================================
 class Enemy(Snake):
     
     def __init__(self, game, start_x=30, start_y=30, color='purple'):
