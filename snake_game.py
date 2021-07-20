@@ -339,8 +339,8 @@ class MainPlayer(Snake):
 
     def set_dir_key(self, event):
         key_direction = event.keysym  # keysym is instance var of KeyPress obj, ex. 'Up'
-        invoked_vx, invoked_vy = Snake.velocities[key_direction]
         if len(self.segments) > 1:
+            invoked_vx, invoked_vy = Snake.velocities[key_direction]
             if invoked_vx != self.vx and invoked_vy != self.vy:  # checks that velocity is not opposite or same (in which case changing isn't necessary)
                 self.set_dir(key_direction)
         else:
