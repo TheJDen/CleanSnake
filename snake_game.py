@@ -60,8 +60,8 @@ class SnakeApp(tk.Tk):
 class GameOption:
     def __init__(self, window, main_window, game_class):
         self.game = game_class
-
         self.game_image = tk.PhotoImage(file=self.game.image_file)
+        
         game_button = tk.Button(window, image=self.game_image)
         def button_click():
             main_window.forget_menu()
