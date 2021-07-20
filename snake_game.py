@@ -59,21 +59,21 @@ class SnakeApp(tk.Tk):
 class GameOption:
     def __init__(self, window, main_window, game_class):
         self.window = window
-        self.main_window = main_window
+        #self.main_window = main_window
         self.game = game_class
         # construct contents
         self.game_image = tk.PhotoImage(file=self.game.image_file)
 
         def button_click():
-            self.main_window.forget_menu()
-            self.game(self.main_window, tk.Canvas(self.main_window, width = 660, height = 660))
+            main_window.forget_menu()
+            self.game(main_window, tk.Canvas(main_window, width = 660, height = 660))
 
-        self.game_button = tk.Button(self.window, image=self.game_image)
-        self.game_button.configure(command=button_click)
-        self.game_button.pack()
+        game_button = tk.Button(self.window, image=self.game_image)
+        game_button.configure(command=button_click)
+        game_button.pack()
 
-        self.game_title = tk.Label(self.window, text=self.game.title)
-        self.game_title.pack()
+        game_title = tk.Label(self.window, text=self.game.title)
+        game_title.pack()
 
 # Purpose: GameOverFrame objects represent a 'mini menu' which comes up upon ends of games.
 #          They create a frame where the user can see their game outcome, score, and options
