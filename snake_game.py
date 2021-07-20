@@ -95,7 +95,6 @@ class GameOption:
 #                         restarts game
 class GameOverPopup:
     def __init__(self, window, game):
-        #self.GUI = game.GUI
         self.game = game
         # determine and add end-game message / scoring
         x, y = game.place()
@@ -106,21 +105,17 @@ class GameOverPopup:
 
         self.menu_button = tk.Button(window, text='MENU', font=('System', 15))
         self.menu_button.pack()
-        self.menu_button.configure(command=self.menu_click)
+        menu_click = lambda: self.game.goto_menu()
+        self.menu_button.configure(command=menu_click)
 
         self.restart_button = tk.Button(window, text='RESTART', font=('System', 15))
         self.restart_button.pack()
-        self.restart_button.configure(command=self.restart_click)
+        restart_click = lambda: self.game.reset()
+        self.restart_button.configure(command=restart_click)
 
         self.restart_str = tk.Label(window, text='Press \'R\' to restart')
         self.restart_str.pack()
 
-    def menu_click(self):
-        self.game.goto_menu()
-
-    def restart_click(self):
-        self.game.reset()
-#==========================================
 # Purpose: ClassicGame objects represent an instance of the Snake Game itself.
 #          They create a tkinter canvas where the user can see the board and
 #          GameObjects
