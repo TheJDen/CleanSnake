@@ -93,27 +93,26 @@ class GameOption:
 #                         brings user to menu
 #          restart_click - function for button to execute upon clicking
 #                         restarts game
-class GameOverFrame(tk.Frame):
-    def __init__(self, game):
-        self.GUI = game.GUI
-        super().__init__(game.GUI, bd=4, relief='raised')
+class GameOverPopup:
+    def __init__(self, window, game):
+        #self.GUI = game.GUI
         self.game = game
         # determine and add end-game message / scoring
         x, y = game.place()
-        self.place(relx=x, rely=y) # places on tkinter window rather than packing after
+        window.place(relx=x, rely=y) # places on tkinter window rather than packing after
         for message in game.results():
-            msg_banner = tk.Label(self, text=message, font=('System', 30))
+            msg_banner = tk.Label(window, text=message, font=('System', 30))
             msg_banner.pack()
 
-        self.menu_button = tk.Button(self, text='MENU', font=('System', 15))
+        self.menu_button = tk.Button(window, text='MENU', font=('System', 15))
         self.menu_button.pack()
         self.menu_button.configure(command=self.menu_click)
 
-        self.restart_button = tk.Button(self, text='RESTART', font=('System', 15))
+        self.restart_button = tk.Button(window, text='RESTART', font=('System', 15))
         self.restart_button.pack()
         self.restart_button.configure(command=self.restart_click)
 
-        self.restart_str = tk.Label(self, text='Press \'R\' to restart')
+        self.restart_str = tk.Label(window, text='Press \'R\' to restart')
         self.restart_str.pack()
 
     def menu_click(self):
@@ -217,7 +216,8 @@ class ClassicGame:
 
     def end_sequence(self, times):
         if times == 0: 
-            self.over_frame = GameOverFrame(self)
+            self.over_frame = tk.Frame(self.GUI, bd=4, relief='raised')
+            GameOverPopup(self.over_frame,self)
             self.game_over = True
             return
         new_state = "normal" if times % 2 else "hidden"
