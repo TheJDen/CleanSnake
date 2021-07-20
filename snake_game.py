@@ -13,8 +13,9 @@ class MainMenu(tk.Frame):
             for col in range(2):
                 tk.Label(self, text=column_headers[col]).grid(column=col, row=1)
                 game_type = game_options[2 * col + row]
-                game_option = GameOption(tk.Frame(self), frame, game_type)
-                game_option.window.grid(column=col, row=grid_row)
+                option_window = tk.Frame(self)
+                option_window.grid(column=col, row=grid_row)
+                GameOption(option_window, frame, game_type)
 
 
 
@@ -58,21 +59,17 @@ class SnakeApp(tk.Tk):
 #                         'forgets' menu, instantiates game
 class GameOption:
     def __init__(self, window, main_window, game_class):
-        self.window = window
-        #self.main_window = main_window
         self.game = game_class
-        # construct contents
-        self.game_image = tk.PhotoImage(file=self.game.image_file)
 
+        self.game_image = tk.PhotoImage(file=self.game.image_file)
+        game_button = tk.Button(window, image=self.game_image)
         def button_click():
             main_window.forget_menu()
             self.game(main_window, tk.Canvas(main_window, width = 660, height = 660))
-
-        game_button = tk.Button(self.window, image=self.game_image)
         game_button.configure(command=button_click)
         game_button.pack()
 
-        game_title = tk.Label(self.window, text=self.game.title)
+        game_title = tk.Label(window, text=self.game.title)
         game_title.pack()
 
 # Purpose: GameOverFrame objects represent a 'mini menu' which comes up upon ends of games.
