@@ -5,14 +5,13 @@ from collections import deque
 
 class MainMenu(tk.Frame):
 
-    def __init__(self, frame, game_options, column_headers):
+    def __init__(self, frame, game_columns, column_headers):
         super().__init__(frame)
         tk.Label(self, text='Game Options (Click)').grid(row=0, columnspan=2)
-        for row in range(2):
-            grid_row = row + 2 # options and headers take first two
-            for col in range(2):
-                tk.Label(self, text=column_headers[col]).grid(column=col, row=1)
-                game_type = game_options[2 * col + row]
+        for col, (header, games) in enumerate(zip(column_headers, game_columns)):
+            tk.Label(self, text=header).grid(column=col, row=1)
+            for i, game_type in enumerate(games):
+                grid_row = i + 2 # options and headers take first two
                 option_window = tk.Frame(self)
                 option_window.grid(column=col, row=grid_row)
                 GameOption(option_window, frame, game_type)
@@ -28,9 +27,9 @@ class SnakeApp(tk.Tk):
         super().__init__()
         self.geometry('660x660')
         self.title('Snake')
-        game_options = [ClassicGame, EnemyClassicGame, TwoPlayerGame, CompetitiveGame]
+        game_columns = [[ClassicGame, EnemyClassicGame], [TwoPlayerGame, CompetitiveGame]]
         column_headers =  ['Single-Player (Arrow Keys)', 'Two-Player (WASD)']
-        self.menu = MainMenu(self, game_options, column_headers)                
+        self.menu = MainMenu(self, game_columns, column_headers)                
         
     def forget_menu(self):
         self.menu.pack_forget()
